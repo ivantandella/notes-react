@@ -26,27 +26,34 @@ export default function AuthForm(props: AuthFormProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleSubmitAuth(e: any) {
     e.preventDefault();
 
     async function executeLogin(data: LoginDataType) {
       try {
+        setIsLoading(true);
         const masuk = await login(data);
         window.location.href = NOTES_PATH;
         localStorage.setItem("token", masuk.data.accessToken);
       } catch (error: any) {
         alert(error.response.data.message);
+      } finally {
+        setIsLoading(false);
       }
     }
 
     async function executeRegister(data: RegisterDataType) {
       try {
+        setIsLoading(true);
         const regis = await register(data);
         window.location.href = LOGIN_PATH;
         alert(`${regis.message}, Please login!`);
       } catch (error: any) {
         alert(error.response.data.message);
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -109,7 +116,14 @@ export default function AuthForm(props: AuthFormProps) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button variant="filled" my={20} fullWidth color="teal" type="submit">
+        <Button
+          loading={isLoading}
+          variant="filled"
+          my={20}
+          fullWidth
+          color="teal"
+          type="submit"
+        >
           {type === "login" ? "Login" : "Register"}
         </Button>
         <Text size="md">
