@@ -6,7 +6,15 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  login,
+  LoginDataType,
+  register,
+  RegisterDataType,
+} from "../services/auth.service";
+import { LOGIN_PATH, NOTES_PATH, REGISTER_PATH } from "../utils/constant";
 
 type AuthFormProps = {
   type: "login" | "register";
@@ -14,8 +22,54 @@ type AuthFormProps = {
 
 export default function AuthForm(props: AuthFormProps) {
   const { type } = props;
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  function handleSubmitAuth(e: any) {
+    e.preventDefault();
+
+    async function executeLogin(data: LoginDataType) {
+      try {
+        const masuk = await login(data);
+        window.location.href = NOTES_PATH;
+        localStorage.setItem("token", masuk.data.accessToken);
+      } catch (error: any) {
+        alert(error.response.data.message);
+      }
+    }
+
+    async function executeRegister(data: RegisterDataType) {
+      try {
+        const regis = await register(data);
+        window.location.href = LOGIN_PATH;
+        alert(`${regis.message}, Please login!`);
+      } catch (error: any) {
+        alert(error.response.data.message);
+      }
+    }
+
+    if (type === "login") {
+      // login logic
+      const data = {
+        email: email,
+        password: password,
+      };
+      executeLogin(data);
+    } else {
+      // register logic
+      const data = {
+        name: name,
+        email: email,
+        password: password,
+      };
+      executeRegister(data);
+    }
+  }
+
   return (
-    <form action="">
+    <form onSubmit={handleSubmitAuth}>
       <Flex direction={"column"} justify={"center"} align={"center"}>
         <Title order={1} mb={20}>
           {type === "login" ? "Login" : "Register"}
@@ -31,6 +85,8 @@ export default function AuthForm(props: AuthFormProps) {
             radius="md"
             label="Name"
             placeholder="Your Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         )}
         <TextInput
@@ -40,6 +96,8 @@ export default function AuthForm(props: AuthFormProps) {
           radius="md"
           label="Email"
           placeholder="example@mail.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <PasswordInput
           w={300}
@@ -48,13 +106,17 @@ export default function AuthForm(props: AuthFormProps) {
           radius="md"
           label="Password"
           placeholder="******"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
-        <Button variant="filled" my={20} fullWidth color="teal">
+        <Button variant="filled" my={20} fullWidth color="teal" type="submit">
           {type === "login" ? "Login" : "Register"}
         </Button>
         <Text size="md">
-          {type === "login" ? "Don't " : "Already "} have an account?{" "}
-          <Link to={type === "login" ? "/register" : "/login"}>
+          {type === "login"
+            ? "Don't have an account? "
+            : "Already have an account? "}
+          <Link to={type === "login" ? REGISTER_PATH : LOGIN_PATH}>
             <b style={{ color: "black" }}>
               {type === "login" ? "Register" : "Login"}
             </b>
