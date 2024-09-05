@@ -8,18 +8,7 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  login,
-  LoginDataType,
-  register,
-  RegisterDataType,
-} from "../services/auth.service";
-import {
-  LOGIN_PATH,
-  NOTES_PATH,
-  PRIMARY_COLOR,
-  REGISTER_PATH,
-} from "../utils/constant";
+import { LOGIN_PATH, PRIMARY_COLOR, REGISTER_PATH } from "../utils/constant";
 import { useAuth } from "../hooks/use-auth";
 
 type AuthFormProps = {

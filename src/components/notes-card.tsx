@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { NotesType, useNotes } from "../hooks/use-notes";
 import ArchiveIcon from "./icons/archive-icon";
 import UnarchiveIcon from "./icons/unarchive-icon";
+import { modals } from "@mantine/modals";
 
 export type NotesCardPropsType = {
   notes: NotesType[];
@@ -21,6 +22,22 @@ export default function NotesCard(props: NotesCardPropsType) {
   const { notes, type } = props;
   const { handleClickDelete, handleClickArchive, handleClickUnarchive } =
     useNotes();
+
+  function openDeleteModal(id: string) {
+    modals.openConfirmModal({
+      title: "Delete note",
+      centered: true,
+      children: (
+        <Text size="sm">Are you sure you want to delete this note?</Text>
+      ),
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onCancel: () => console.log("Cancel"),
+      onConfirm: () => {
+        handleClickDelete(id);
+      },
+    });
+  }
 
   return (
     <Flex direction={"row"} gap={"md"} p={"lg"} wrap={"wrap"}>
@@ -72,7 +89,7 @@ export default function NotesCard(props: NotesCardPropsType) {
             <Button
               color={DANGER_COLOR}
               onClick={() => {
-                handleClickDelete(note.id);
+                openDeleteModal(note.id);
               }}
             >
               <TrashIcon />

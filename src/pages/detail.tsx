@@ -12,6 +12,7 @@ import {
 import ArrowLeftIcon from "../components/icons/arrow-left-icon";
 import { useNotes } from "../hooks/use-notes";
 import TrashIcon from "../components/icons/trash-icon";
+import { modals } from "@mantine/modals";
 
 export default function DetailPage() {
   const { id } = useParams();
@@ -20,6 +21,22 @@ export default function DetailPage() {
   useEffect(() => {
     getDetailNote(id);
   }, [id]);
+
+  function openDeleteModal(id: string) {
+    modals.openConfirmModal({
+      title: "Delete note",
+      centered: true,
+      children: (
+        <Text size="sm">Are you sure you want to delete this note?</Text>
+      ),
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onCancel: () => console.log("Cancel"),
+      onConfirm: () => {
+        handleClickDelete(id);
+      },
+    });
+  }
 
   return (
     <>
@@ -51,7 +68,7 @@ export default function DetailPage() {
             </Link>
             <Button
               color={DANGER_COLOR}
-              onClick={() => handleClickDelete(note.id)}
+              onClick={() => openDeleteModal(note.id)}
             >
               <TrashIcon />
             </Button>

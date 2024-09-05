@@ -16,7 +16,7 @@ export default function Navbar() {
       direction="row"
       justify={"space-between"}
       align={"center"}
-      w={"100vw"}
+      w={"100%"}
       p={"lg"}
       style={{ backgroundColor: PRIMARY_COLOR }}
     >

@@ -9,7 +9,12 @@ import {
   getNotes,
   unarchiveNote,
 } from "../services/notes.service";
-import { ARCHIVED_NOTES_PATH, NOTES_PATH } from "../utils/constant";
+import {
+  ARCHIVED_NOTES_PATH,
+  NOTES_PATH,
+  PRIMARY_COLOR,
+} from "../utils/constant";
+import { notifications } from "@mantine/notifications";
 
 export type NotesType = {
   id: string;
@@ -29,7 +34,15 @@ export function useNotes() {
     try {
       setIsLoading(true);
       const res = await createNote(data);
-      console.log(res);
+      if (res.status === "success") {
+        notifications.show({
+          title: res.status.toUpperCase(),
+          message: res.message,
+          position: "top-right",
+          autoClose: 5000,
+          color: PRIMARY_COLOR,
+        });
+      }
     } catch (error: any) {
       console.log(error);
     } finally {
@@ -77,8 +90,16 @@ export function useNotes() {
     try {
       setIsLoading(true);
       const res = await deleteNote(id);
-      window.location.href = NOTES_PATH;
-      alert(res.message);
+      if (res.status === "success") {
+        notifications.show({
+          title: res.status.toUpperCase(),
+          message: res.message,
+          position: "top-right",
+          autoClose: 5000,
+          color: PRIMARY_COLOR,
+        });
+      }
+      // window.location.href = NOTES_PATH;
     } catch (error) {
       console.log(error);
     } finally {
@@ -90,8 +111,16 @@ export function useNotes() {
     try {
       setIsLoading(true);
       const res = await archiveNote(id);
-      window.location.href = ARCHIVED_NOTES_PATH;
-      alert(res.message);
+      if (res.status === "success") {
+        notifications.show({
+          title: res.status.toUpperCase(),
+          message: res.message,
+          position: "top-right",
+          autoClose: 5000,
+          color: PRIMARY_COLOR,
+        });
+      }
+      // window.location.href = ARCHIVED_NOTES_PATH;
     } catch (error) {
       console.log(error);
     } finally {
@@ -103,8 +132,16 @@ export function useNotes() {
     try {
       setIsLoading(true);
       const res = await unarchiveNote(id);
-      window.location.href = NOTES_PATH;
-      alert(res.message);
+      if (res.status === "success") {
+        notifications.show({
+          title: res.status.toUpperCase(),
+          message: res.message,
+          position: "top-right",
+          autoClose: 5000,
+          color: PRIMARY_COLOR,
+        });
+      }
+      // window.location.href = NOTES_PATH;
     } catch (error) {
       console.log(error);
     } finally {

@@ -16,7 +16,8 @@ import {
   NOTES_PATH,
   REGISTER_PATH,
 } from "./utils/constant.ts";
-import { ArchivedNotesPage } from "./pages/archived-notes.tsx";
+import { ModalsProvider } from "@mantine/modals";
+import "@mantine/notifications/styles.css";
 
 const router = createBrowserRouter([
   {
@@ -48,7 +49,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <MantineProvider theme={theme}>
-      <RouterProvider router={router} />
+      <ModalsProvider>
+        <RouterProvider router={router} />
+      </ModalsProvider>
     </MantineProvider>
   </React.StrictMode>
 );
