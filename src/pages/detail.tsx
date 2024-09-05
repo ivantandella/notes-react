@@ -1,33 +1,19 @@
-import { useEffect, useState } from "react";
-import { getDetailNotes } from "../services/notes.service";
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Button, Card, Flex, Loader, Text, Title } from "@mantine/core";
+import { Button, Card, Flex, Group, Loader, Text, Title } from "@mantine/core";
 import Navbar from "../components/navbar";
-import { NotesType } from "./notes";
 import { convertDate } from "../utils/date";
-import { NOTES_PATH, PRIMARY_COLOR } from "../utils/constant";
+import { DANGER_COLOR, NOTES_PATH, PRIMARY_COLOR } from "../utils/constant";
 import ArrowLeftIcon from "../components/icons/arrow-left-icon";
+import { useNotes } from "../hooks/use-notes";
+import TrashIcon from "../components/icons/trash-icon";
 
 export default function DetailPage() {
   const { id } = useParams();
-  const [isLoading, setIsLoading] = useState(false);
-  const [note, setNote] = useState<NotesType>();
+  const { handleClickDelete, isLoading, note, getDetailNote } = useNotes();
 
   useEffect(() => {
-    async function execute() {
-      try {
-        setIsLoading(true);
-        const res = await getDetailNotes(id);
-        setNote(res.data.data);
-        // console.log(note);
-        // console.log(res.data.data);
-      } catch (error: any) {
-        alert(error.response.data.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    execute();
+    getDetailNote(id);
   }, [id]);
 
   return (
@@ -50,11 +36,19 @@ export default function DetailPage() {
               </Text>
             </Flex>
           </Card>
-          <Link to={NOTES_PATH}>
-            <Button color={PRIMARY_COLOR}>
-              <ArrowLeftIcon />
+          <Group>
+            <Link to={NOTES_PATH}>
+              <Button color={PRIMARY_COLOR}>
+                <ArrowLeftIcon />
+              </Button>
+            </Link>
+            <Button
+              color={DANGER_COLOR}
+              onClick={() => handleClickDelete(note.id)}
+            >
+              <TrashIcon />
             </Button>
-          </Link>
+          </Group>
         </Card>
       )}
     </>

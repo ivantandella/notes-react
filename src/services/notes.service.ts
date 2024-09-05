@@ -10,9 +10,16 @@ export async function getNotes() {
   return res;
 }
 
-export async function getDetailNotes(id?: string) {
+export async function getDetail(id?: string) {
   const res = await axios.get(`${BASE_URL}/notes/${id}`, {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
-  return res;
+  return res.data;
+}
+
+export async function deleteNote(id?: string) {
+  const res = await axios.delete(`${BASE_URL}/notes/${id}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  return res.data;
 }

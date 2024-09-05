@@ -1,42 +1,17 @@
 import { useAuth } from "../hooks/use-auth";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Navbar from "../components/navbar";
-import { Card, Flex, Loader, Text, Title } from "@mantine/core";
-import { getNotes } from "../services/notes.service";
-import { convertDate } from "../utils/date";
+import { Flex, Loader, Title } from "@mantine/core";
 import NotesCard from "../components/notes-card";
-
-export type NotesType = {
-  id: string;
-  title: string;
-  body: string;
-  owner: string;
-  createdAt: string;
-  archived: boolean;
-};
+import { useNotes } from "../hooks/use-notes";
 
 export default function NotesPage() {
   const { checkLogin } = useAuth();
-  const [notes, setNotes] = useState<NotesType[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { notes, isLoading, getAllNotes } = useNotes();
 
   useEffect(() => {
     checkLogin();
-  }, []);
-
-  useEffect(() => {
-    async function execute() {
-      try {
-        setIsLoading(true);
-        const res = await getNotes();
-        setNotes(res.data.data);
-      } catch (error: any) {
-        alert(error.response.data.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    execute();
+    getAllNotes();
   }, []);
 
   return (
@@ -45,6 +20,12 @@ export default function NotesPage() {
       {isLoading && (
         <Flex justify={"center"} align={"center"} h={"100vh"}>
           <Loader />
+        </Flex>
+      )}
+
+      {notes.length === 0 && (
+        <Flex justify={"center"} align={"center"} h={"100vh"}>
+          <Title order={2}>No notes found</Title>
         </Flex>
       )}
       <NotesCard notes={notes} />
