@@ -13,6 +13,7 @@ import { DANGER_COLOR, PRIMARY_COLOR, WARNING_COLOR } from "../utils/constant";
 import TrashIcon from "./icons/trash-icon";
 import EditIcon from "./icons/edit-icon";
 import InfoIcon from "./icons/info-icon";
+import { Link } from "react-router-dom";
 
 export type NotesCardPropsType = {
   notes: NotesType[];
@@ -40,9 +41,11 @@ export default function NotesCard(props: NotesCardPropsType) {
           </Text>
 
           <Group mt={20}>
-            <Button color={PRIMARY_COLOR}>
-              <InfoIcon />
-            </Button>
+            <Link to={`/notes/${note.id}`}>
+              <Button color={PRIMARY_COLOR}>
+                <InfoIcon />
+              </Button>
+            </Link>
             <Button color={WARNING_COLOR}>
               <EditIcon />
             </Button>

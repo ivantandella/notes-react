@@ -30,8 +30,8 @@ export default function NotesPage() {
         setIsLoading(true);
         const res = await getNotes();
         setNotes(res.data.data);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        alert(error.response.data.message);
       } finally {
         setIsLoading(false);
       }

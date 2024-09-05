@@ -8,6 +8,12 @@ import LoginPage from "./pages/login.tsx";
 import RegisterPage from "./pages/register.tsx";
 import NotesPage from "./pages/notes.tsx";
 import DetailPage from "./pages/detail.tsx";
+import {
+  DETAIL_NOTES_PATH,
+  LOGIN_PATH,
+  NOTES_PATH,
+  REGISTER_PATH,
+} from "./utils/constant.ts";
 
 const router = createBrowserRouter([
   {
@@ -15,19 +21,19 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/login",
+    path: LOGIN_PATH,
     element: <LoginPage />,
   },
   {
-    path: "/register",
+    path: REGISTER_PATH,
     element: <RegisterPage />,
   },
   {
-    path: "/notes",
+    path: NOTES_PATH,
     element: <NotesPage />,
   },
   {
-    path: "/notes/:id",
+    path: DETAIL_NOTES_PATH,
     element: <DetailPage />,
   },
 ]);
