@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   AddNoteType,
   archiveNote,
@@ -15,6 +15,7 @@ import {
   PRIMARY_COLOR,
 } from "../utils/constant";
 import { notifications } from "@mantine/notifications";
+import { NumberContext } from "../context/number-context";
 
 export type NotesType = {
   id: string;
@@ -29,6 +30,7 @@ export function useNotes() {
   const [notes, setNotes] = useState<NotesType[]>([]);
   const [note, setNote] = useState<NotesType>();
   const [isLoading, setIsLoading] = useState(false);
+  const { number, setNumber } = useContext(NumberContext);
 
   async function onCreateNote(data: AddNoteType) {
     try {
@@ -43,6 +45,7 @@ export function useNotes() {
           color: PRIMARY_COLOR,
         });
       }
+      setNumber(number + 1);
     } catch (error: any) {
       console.log(error);
     } finally {
@@ -99,6 +102,7 @@ export function useNotes() {
           color: PRIMARY_COLOR,
         });
       }
+      setNumber(number + 1);
       // window.location.href = NOTES_PATH;
     } catch (error) {
       console.log(error);
@@ -120,6 +124,7 @@ export function useNotes() {
           color: PRIMARY_COLOR,
         });
       }
+      setNumber(number + 1);
       // window.location.href = ARCHIVED_NOTES_PATH;
     } catch (error) {
       console.log(error);
@@ -141,6 +146,7 @@ export function useNotes() {
           color: PRIMARY_COLOR,
         });
       }
+      setNumber(number + 1);
       // window.location.href = NOTES_PATH;
     } catch (error) {
       console.log(error);
@@ -153,6 +159,7 @@ export function useNotes() {
     note,
     notes,
     isLoading,
+    number,
     getAllNotes,
     onCreateNote,
     getDetailNote,

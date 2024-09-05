@@ -16,7 +16,8 @@ type NotesPagePropsType = {
 export default function NotesPage(props: NotesPagePropsType) {
   const { type } = props;
   const { checkLogin } = useAuth();
-  const { notes, isLoading, getAllNotes, getArchivedNotes } = useNotes();
+  const { notes, isLoading, getAllNotes, getArchivedNotes, number } =
+    useNotes();
 
   useEffect(() => {
     checkLogin();
@@ -25,7 +26,7 @@ export default function NotesPage(props: NotesPagePropsType) {
     } else {
       getArchivedNotes();
     }
-  }, [type]);
+  }, [type, number]);
 
   return (
     <>
