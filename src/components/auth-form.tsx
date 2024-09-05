@@ -20,6 +20,7 @@ import {
   PRIMARY_COLOR,
   REGISTER_PATH,
 } from "../utils/constant";
+import { useAuth } from "../hooks/use-auth";
 
 type AuthFormProps = {
   type: "login" | "register";
@@ -27,40 +28,14 @@ type AuthFormProps = {
 
 export default function AuthForm(props: AuthFormProps) {
   const { type } = props;
+  const { isLoading, executeLogin, executeRegister } = useAuth();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   function handleSubmitAuth(e: any) {
     e.preventDefault();
-
-    async function executeLogin(data: LoginDataType) {
-      try {
-        setIsLoading(true);
-        const masuk = await login(data);
-        window.location.href = NOTES_PATH;
-        localStorage.setItem("token", masuk.data.accessToken);
-      } catch (error: any) {
-        alert(error.response.data.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    async function executeRegister(data: RegisterDataType) {
-      try {
-        setIsLoading(true);
-        const regis = await register(data);
-        window.location.href = LOGIN_PATH;
-        alert(`${regis.message}, Please login!`);
-      } catch (error: any) {
-        alert(error.response.data.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
 
     if (type === "login") {
       // login logic

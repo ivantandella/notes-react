@@ -23,14 +23,14 @@ export default function NotesCard(props: NotesCardPropsType) {
     useNotes();
 
   return (
-    <Flex direction={"row"} gap={"lg"} p={"lg"}>
+    <Flex direction={"row"} gap={"md"} p={"lg"} wrap={"wrap"}>
       {notes.map((note) => (
         <Card
           key={note.id}
           withBorder
           shadow="md"
           radius={"md"}
-          style={{ width: "350px", minHeight: "200px" }}
+          style={{ width: "290px", minHeight: "200px" }}
         >
           <Title order={3}>{note.title}</Title>
           <Text size="sm" fs={"italic"}>

@@ -1,8 +1,20 @@
 import axios from "axios";
 import { ACCESS_TOKEN, BASE_URL } from "../utils/constant";
 
+export type AddNoteType = {
+  title: string;
+  body: string;
+};
+
 export async function getNotes() {
   const res = await axios.get(`${BASE_URL}/notes`, {
+    headers: { Authorization: `Bearer ${ACCESS_TOKEN}` },
+  });
+  return res.data;
+}
+
+export async function createNote(data: AddNoteType) {
+  const res = await axios.post(`${BASE_URL}/notes`, data, {
     headers: { Authorization: `Bearer ${ACCESS_TOKEN}` },
   });
   return res.data;

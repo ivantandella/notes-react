@@ -1,6 +1,8 @@
 import { useState } from "react";
 import {
+  AddNoteType,
   archiveNote,
+  createNote,
   deleteNote,
   getArchived,
   getDetail,
@@ -21,7 +23,19 @@ export type NotesType = {
 export function useNotes() {
   const [notes, setNotes] = useState<NotesType[]>([]);
   const [note, setNote] = useState<NotesType>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function onCreateNote(data: AddNoteType) {
+    try {
+      setIsLoading(true);
+      const res = await createNote(data);
+      console.log(res);
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   async function getAllNotes() {
     try {
@@ -61,31 +75,40 @@ export function useNotes() {
 
   async function handleClickDelete(id: string) {
     try {
+      setIsLoading(true);
       const res = await deleteNote(id);
       window.location.href = NOTES_PATH;
       alert(res.message);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
   async function handleClickArchive(id: string) {
     try {
+      setIsLoading(true);
       const res = await archiveNote(id);
       window.location.href = ARCHIVED_NOTES_PATH;
       alert(res.message);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
   async function handleClickUnarchive(id: string) {
     try {
+      setIsLoading(true);
       const res = await unarchiveNote(id);
       window.location.href = NOTES_PATH;
       alert(res.message);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -94,6 +117,7 @@ export function useNotes() {
     notes,
     isLoading,
     getAllNotes,
+    onCreateNote,
     getDetailNote,
     getArchivedNotes,
     handleClickDelete,

@@ -5,6 +5,7 @@ import { Flex, Loader, Title } from "@mantine/core";
 import NotesCard from "../components/notes-card";
 import { useNotes } from "../hooks/use-notes";
 import Header from "../components/header";
+import { PRIMARY_COLOR } from "../utils/constant";
 
 type NotesPagePropsType = {
   type: "active" | "archive";
@@ -29,11 +30,11 @@ export default function NotesPage(props: NotesPagePropsType) {
       <Navbar />
       {isLoading && (
         <Flex justify={"center"} align={"center"} h={"100vh"}>
-          <Loader />
+          <Loader color={PRIMARY_COLOR} />
         </Flex>
       )}
       <Header
-        title={type === "active" ? "All Notes" : "Archived Notes"}
+        pageTitle={type === "active" ? "All Notes" : "Archived Notes"}
         type={type}
       />
       {notes.length === 0 && (
