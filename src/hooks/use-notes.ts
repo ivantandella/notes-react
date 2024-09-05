@@ -1,7 +1,13 @@
 import { useState } from "react";
-import { deleteNote, getDetail, getNotes } from "../services/notes.service";
-import { NOTES_PATH } from "../utils/constant";
-import { useParams } from "react-router-dom";
+import {
+  archiveNote,
+  deleteNote,
+  getArchived,
+  getDetail,
+  getNotes,
+  unarchiveNote,
+} from "../services/notes.service";
+import { ARCHIVED_NOTES_PATH, NOTES_PATH } from "../utils/constant";
 
 export type NotesType = {
   id: string;
@@ -21,7 +27,7 @@ export function useNotes() {
     try {
       setIsLoading(true);
       const res = await getNotes();
-      setNotes(res.data.data);
+      setNotes(res.data);
     } catch (error: any) {
       alert(error.response.data.message);
     } finally {
@@ -41,18 +47,46 @@ export function useNotes() {
     }
   }
 
-  function handleClickDelete(id: string) {
-    async function execute() {
-      try {
-        const res = await deleteNote(id);
-        console.log(res);
-        alert(res.message);
-        window.location.href = NOTES_PATH;
-      } catch (error) {
-        console.log(error);
-      }
+  async function getArchivedNotes() {
+    try {
+      setIsLoading(true);
+      const res = await getArchived();
+      setNotes(res.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
-    execute();
+  }
+
+  async function handleClickDelete(id: string) {
+    try {
+      const res = await deleteNote(id);
+      window.location.href = NOTES_PATH;
+      alert(res.message);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleClickArchive(id: string) {
+    try {
+      const res = await archiveNote(id);
+      window.location.href = ARCHIVED_NOTES_PATH;
+      alert(res.message);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleClickUnarchive(id: string) {
+    try {
+      const res = await unarchiveNote(id);
+      window.location.href = NOTES_PATH;
+      alert(res.message);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return {
@@ -61,6 +95,9 @@ export function useNotes() {
     isLoading,
     getAllNotes,
     getDetailNote,
+    getArchivedNotes,
     handleClickDelete,
+    handleClickArchive,
+    handleClickUnarchive,
   };
 }

@@ -1,27 +1,18 @@
-import { useAuth } from "../hooks/use-auth";
-import { useEffect } from "react";
-import Navbar from "../components/navbar";
 import { Flex, Loader, Title } from "@mantine/core";
+import Navbar from "../components/navbar";
 import NotesCard from "../components/notes-card";
+import { useAuth } from "../hooks/use-auth";
 import { useNotes } from "../hooks/use-notes";
+import { useEffect } from "react";
 import Header from "../components/header";
 
-type NotesPagePropsType = {
-  type: "active" | "archive";
-};
-
-export default function NotesPage(props: NotesPagePropsType) {
-  const { type } = props;
+export function ArchivedNotesPage() {
   const { checkLogin } = useAuth();
-  const { notes, isLoading, getAllNotes, getArchivedNotes } = useNotes();
+  const { notes, isLoading, getArchivedNotes } = useNotes();
 
   useEffect(() => {
     checkLogin();
-    if (type === "active") {
-      getAllNotes();
-    } else {
-      getArchivedNotes();
-    }
+    getArchivedNotes();
   }, []);
 
   return (
@@ -32,16 +23,13 @@ export default function NotesPage(props: NotesPagePropsType) {
           <Loader />
         </Flex>
       )}
-      <Header
-        title={type === "active" ? "All Notes" : "Archived Notes"}
-        type={type}
-      />
+      <Header title="Archived Notes" type="archive" />
       {notes.length === 0 && (
         <Flex justify={"center"} align={"center"} h={"100vh"}>
           <Title order={2}>No notes found</Title>
         </Flex>
       )}
-      <NotesCard notes={notes} type={type} />
+      <NotesCard notes={notes} type="archive" />
     </>
   );
 }

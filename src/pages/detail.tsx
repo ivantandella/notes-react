@@ -1,9 +1,14 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Button, Card, Flex, Group, Loader, Text, Title } from "@mantine/core";
+import { Button, Card, Flex, Loader, Text, Title } from "@mantine/core";
 import Navbar from "../components/navbar";
 import { convertDate } from "../utils/date";
-import { DANGER_COLOR, NOTES_PATH, PRIMARY_COLOR } from "../utils/constant";
+import {
+  ARCHIVED_NOTES_PATH,
+  DANGER_COLOR,
+  NOTES_PATH,
+  PRIMARY_COLOR,
+} from "../utils/constant";
 import ArrowLeftIcon from "../components/icons/arrow-left-icon";
 import { useNotes } from "../hooks/use-notes";
 import TrashIcon from "../components/icons/trash-icon";
@@ -26,7 +31,9 @@ export default function DetailPage() {
       )}
       {note && (
         <Card withBorder shadow="sm" p="lg" m={100}>
-          <Title mb={40}>Detail Notes</Title>
+          <Title mb={40}>
+            Detail Notes {note.archived ? <i>(archived)</i> : ""}
+          </Title>
           <Card withBorder mb={20}>
             <Flex direction={"column"} gap={"md"}>
               <Title order={2}>{note.title}</Title>
@@ -36,8 +43,8 @@ export default function DetailPage() {
               </Text>
             </Flex>
           </Card>
-          <Group>
-            <Link to={NOTES_PATH}>
+          <Flex direction={"row"} justify={"space-between"}>
+            <Link to={note.archived ? ARCHIVED_NOTES_PATH : NOTES_PATH}>
               <Button color={PRIMARY_COLOR}>
                 <ArrowLeftIcon />
               </Button>
@@ -48,7 +55,7 @@ export default function DetailPage() {
             >
               <TrashIcon />
             </Button>
-          </Group>
+          </Flex>
         </Card>
       )}
     </>

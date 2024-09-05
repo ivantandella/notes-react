@@ -9,15 +9,18 @@ import RegisterPage from "./pages/register.tsx";
 import NotesPage from "./pages/notes.tsx";
 import DetailPage from "./pages/detail.tsx";
 import {
+  ARCHIVED_NOTES_PATH,
   DETAIL_NOTES_PATH,
+  HOME_PATH,
   LOGIN_PATH,
   NOTES_PATH,
   REGISTER_PATH,
 } from "./utils/constant.ts";
+import { ArchivedNotesPage } from "./pages/archived-notes.tsx";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: HOME_PATH,
     element: <App />,
   },
   {
@@ -30,11 +33,15 @@ const router = createBrowserRouter([
   },
   {
     path: NOTES_PATH,
-    element: <NotesPage />,
+    element: <NotesPage type="active" />,
   },
   {
     path: DETAIL_NOTES_PATH,
     element: <DetailPage />,
+  },
+  {
+    path: ARCHIVED_NOTES_PATH,
+    element: <NotesPage type="archive" />,
   },
 ]);
 
