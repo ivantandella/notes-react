@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "../utils/constant";
+import { ACCESS_TOKEN, BASE_URL } from "../utils/constant";
 
 export type LoginDataType = {
   email: string;
@@ -19,5 +19,12 @@ export async function login(data: LoginDataType) {
 
 export async function register(data: RegisterDataType) {
   const res = await axios.post(`${BASE_URL}/register`, data);
+  return res.data;
+}
+
+export async function getUser() {
+  const res = await axios.get(`${BASE_URL}/users/me`, {
+    headers: { Authorization: `Bearer ${ACCESS_TOKEN}` },
+  });
   return res.data;
 }

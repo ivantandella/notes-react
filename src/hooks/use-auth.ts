@@ -1,6 +1,10 @@
+import { useState } from "react";
+import { getUser } from "../services/auth.service";
 import { LOGIN_PATH } from "../utils/constant";
 
 export function useAuth() {
+  const [name, setName] = useState();
+
   function checkLogin() {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -14,5 +18,14 @@ export function useAuth() {
     window.location.href = LOGIN_PATH;
   }
 
-  return { checkLogin, handleLogout };
+  async function getUserData() {
+    try {
+      const res = await getUser();
+      setName(res.data.name);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  return { name, checkLogin, handleLogout, getUserData };
 }

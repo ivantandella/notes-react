@@ -22,7 +22,7 @@ export default function NotesPage(props: NotesPagePropsType) {
     } else {
       getArchivedNotes();
     }
-  }, []);
+  }, [type]);
 
   return (
     <>

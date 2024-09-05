@@ -4,10 +4,8 @@ import {
   DANGER_COLOR,
   PRIMARY_COLOR,
   SECONDARY_COLOR,
-  WARNING_COLOR,
 } from "../utils/constant";
 import TrashIcon from "./icons/trash-icon";
-import EditIcon from "./icons/edit-icon";
 import InfoIcon from "./icons/info-icon";
 import { Link } from "react-router-dom";
 import { NotesType, useNotes } from "../hooks/use-notes";
@@ -48,10 +46,6 @@ export default function NotesCard(props: NotesCardPropsType) {
                 <InfoIcon />
               </Button>
             </Link>
-
-            {/* <Button color={WARNING_COLOR}>
-              <EditIcon />
-            </Button> */}
 
             {type === "active" && (
               <Button

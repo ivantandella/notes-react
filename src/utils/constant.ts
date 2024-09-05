@@ -1,6 +1,9 @@
 // API Endpoint
 export const BASE_URL = "https://notes-api.dicoding.dev/v1";
 
+// User Token
+export const ACCESS_TOKEN = localStorage.getItem("token");
+
 // Route Path
 export const HOME_PATH = "/";
 export const LOGIN_PATH = "/login";

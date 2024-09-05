@@ -2,9 +2,15 @@ import { Button, Flex, Text, Title } from "@mantine/core";
 import { useAuth } from "../hooks/use-auth";
 import { PRIMARY_COLOR } from "../utils/constant";
 import PowerIcon from "./icons/power-icon";
+import { useEffect } from "react";
 
 export default function Navbar() {
-  const { handleLogout } = useAuth();
+  const { name, handleLogout, getUserData } = useAuth();
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
   return (
     <Flex
       direction="row"
@@ -17,7 +23,7 @@ export default function Navbar() {
       <Title style={{ color: "white" }}>Notes App</Title>
       <Flex direction={"row"} gap={"md"} align={"center"}>
         <Text style={{ color: "white" }} fw={600} size={"lg"}>
-          {/* Hi, How are you? */}
+          Hi, {name}
         </Text>
         <Button color="black" onClick={handleLogout}>
           <PowerIcon />
