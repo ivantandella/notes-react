@@ -14,7 +14,12 @@ import {
   register,
   RegisterDataType,
 } from "../services/auth.service";
-import { LOGIN_PATH, NOTES_PATH, REGISTER_PATH } from "../utils/constant";
+import {
+  LOGIN_PATH,
+  NOTES_PATH,
+  PRIMARY_COLOR,
+  REGISTER_PATH,
+} from "../utils/constant";
 
 type AuthFormProps = {
   type: "login" | "register";
@@ -121,7 +126,7 @@ export default function AuthForm(props: AuthFormProps) {
           variant="filled"
           my={20}
           fullWidth
-          color="teal"
+          color={PRIMARY_COLOR}
           type="submit"
         >
           {type === "login" ? "Login" : "Register"}
