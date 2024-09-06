@@ -1,10 +1,9 @@
 import { useState } from "react";
 import {
+  AuthDataType,
   getUser,
   login,
-  LoginDataType,
   register,
-  RegisterDataType,
 } from "../services/auth.service";
 import {
   DANGER_COLOR,
@@ -21,7 +20,7 @@ export function useAuth() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  async function executeLogin(data: LoginDataType) {
+  async function executeLogin(data: AuthDataType) {
     try {
       setIsLoading(true);
       const masuk = await login(data);
@@ -51,7 +50,7 @@ export function useAuth() {
     }
   }
 
-  async function executeRegister(data: RegisterDataType) {
+  async function executeRegister(data: AuthDataType) {
     try {
       setIsLoading(true);
       const regis = await register(data);

@@ -11,6 +11,7 @@ import { LOGIN_PATH, PRIMARY_COLOR, REGISTER_PATH } from "../utils/constant";
 import { useAuth } from "../hooks/use-auth";
 import { useForm, yupResolver } from "@mantine/form";
 import * as Yup from "yup";
+import { AuthDataType } from "../services/auth.service";
 
 type AuthFormProps = {
   type: "login" | "register";
@@ -54,7 +55,7 @@ export default function AuthForm(props: AuthFormProps) {
     validate: yupResolver(schema),
   });
 
-  function handleSubmitAuth(values: any) {
+  function handleSubmitAuth(values: AuthDataType) {
     isLogin() ? executeLogin(values) : executeRegister(values);
   }
 
