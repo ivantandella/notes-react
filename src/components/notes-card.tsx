@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Group, Text, Title } from "@mantine/core";
+import { Button, Card, Group, Text, Title } from "@mantine/core";
 import { convertDate } from "../utils/date";
 import {
   DANGER_COLOR,
@@ -12,14 +12,16 @@ import { NotesType, useNotes } from "../hooks/use-notes";
 import ArchiveIcon from "./icons/archive-icon";
 import UnarchiveIcon from "./icons/unarchive-icon";
 import { modals } from "@mantine/modals";
+import { useState } from "react";
 
 export type NotesCardPropsType = {
-  notes: NotesType[];
+  note: NotesType;
   type: "active" | "archive";
 };
 
 export default function NotesCard(props: NotesCardPropsType) {
-  const { notes, type } = props;
+  const [archiveLoading, setArchiveLoading] = useState(false);
+  const { note, type } = props;
   const { handleClickDelete, handleClickArchive, handleClickUnarchive } =
     useNotes();
 
@@ -40,63 +42,75 @@ export default function NotesCard(props: NotesCardPropsType) {
   }
 
   return (
-    <Flex direction={"row"} gap={"md"} p={"lg"} wrap={"wrap"}>
-      {notes.map((note) => (
-        <Card
-          key={note.id}
-          withBorder
-          shadow="md"
-          radius={"md"}
-          style={{ width: "290px", minHeight: "200px" }}
+    <Card
+      key={note.id}
+      withBorder
+      shadow="md"
+      radius={"md"}
+      style={{ width: "290px", minHeight: "200px" }}
+    >
+      <Title order={3}>{note.title}</Title>
+      <Text size="sm" fs={"italic"}>
+        {convertDate(note.createdAt)}
+      </Text>
+      <Text size="lg" h={"100%"}>
+        {note.body}
+      </Text>
+
+      <Group mt={20}>
+        <Link to={`/notes/${note.id}`}>
+          <Button color={PRIMARY_COLOR}>
+            <InfoIcon />
+          </Button>
+        </Link>
+
+        {type === "active" && (
+          <Button
+            loading={archiveLoading}
+            color={SECONDARY_COLOR}
+            onClick={async () => {
+              try {
+                setArchiveLoading(true);
+                await handleClickArchive(note.id);
+              } catch (e) {
+                console.log(e);
+              } finally {
+                setArchiveLoading(false);
+              }
+            }}
+          >
+            <ArchiveIcon />
+          </Button>
+        )}
+
+        {type === "archive" && (
+          <Button
+            loading={archiveLoading}
+            color={SECONDARY_COLOR}
+            onClick={async () => {
+              try {
+                setArchiveLoading(true);
+                await handleClickUnarchive(note.id);
+              } catch (e) {
+                console.log(e);
+              } finally {
+                setArchiveLoading(false);
+              }
+            }}
+          >
+            <UnarchiveIcon />
+          </Button>
+        )}
+
+        <Button
+          color={DANGER_COLOR}
+          onClick={() => {
+            openDeleteModal(note.id);
+          }}
         >
-          <Title order={3}>{note.title}</Title>
-          <Text size="sm" fs={"italic"}>
-            {convertDate(note.createdAt)}
-          </Text>
-          <Text size="lg" h={"100%"}>
-            {note.body}
-          </Text>
-
-          <Group mt={20}>
-            <Link to={`/notes/${note.id}`}>
-              <Button color={PRIMARY_COLOR}>
-                <InfoIcon />
-              </Button>
-            </Link>
-
-            {type === "active" && (
-              <Button
-                color={SECONDARY_COLOR}
-                onClick={() => {
-                  handleClickArchive(note.id);
-                }}
-              >
-                <ArchiveIcon />
-              </Button>
-            )}
-
-            {type === "archive" && (
-              <Button
-                color={SECONDARY_COLOR}
-                onClick={() => {
-                  handleClickUnarchive(note.id);
-                }}
-              >
-                <UnarchiveIcon />
-              </Button>
-            )}
-
-            <Button
-              color={DANGER_COLOR}
-              onClick={() => {
-                openDeleteModal(note.id);
-              }}
-            >
-              <TrashIcon />
-            </Button>
-          </Group>
-        </Card>
-      ))}
-    </Flex>
+          <TrashIcon />
+        </Button>
+      </Group>
+    </Card>
   );
 }

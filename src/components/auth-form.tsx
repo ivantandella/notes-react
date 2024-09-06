@@ -95,9 +95,7 @@ export default function AuthForm(props: AuthFormProps) {
             ? "Don't have an account? "
             : "Already have an account? "}
           <Link to={type === "login" ? REGISTER_PATH : LOGIN_PATH}>
-            <b style={{ color: "black" }}>
-              {type === "login" ? "Register" : "Login"}
-            </b>
+            <b>{type === "login" ? "Register" : "Login"}</b>
           </Link>{" "}
         </Text>
       </Flex>

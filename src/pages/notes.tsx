@@ -42,7 +42,14 @@ export default function NotesPage(props: NotesPagePropsType) {
           <Title order={2}>No notes found</Title>
         </Flex>
       ) : (
-        notes && notes.length > 0 && <NotesCard notes={notes} type={type} />
+        notes &&
+        notes.length > 0 && (
+          <Flex direction={"row"} gap={"md"} p={"lg"} wrap={"wrap"}>
+            {notes.map((note) => (
+              <NotesCard key={note.id} note={note} type={type} />
+            ))}
+          </Flex>
+        )
       )}
     </>
   );

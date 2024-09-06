@@ -9,9 +9,10 @@ import {
   getNotes,
   unarchiveNote,
 } from "../services/notes.service";
-import { PRIMARY_COLOR } from "../utils/constant";
+import { NOTES_PATH, PRIMARY_COLOR } from "../utils/constant";
 import { notifications } from "@mantine/notifications";
 import { ReloadContext } from "../context/reload-context";
+import { useNavigate } from "react-router-dom";
 
 export type NotesType = {
   id: string;
@@ -27,6 +28,7 @@ export function useNotes() {
   const [note, setNote] = useState<NotesType>();
   const [isLoading, setIsLoading] = useState(false);
   const { reload, setReload } = useContext(ReloadContext);
+  const navigate = useNavigate();
 
   async function onCreateNote(data: AddNoteType) {
     try {
@@ -100,6 +102,7 @@ export function useNotes() {
         });
       }
       setReload(reload + 1);
+      navigate(NOTES_PATH);
       // window.location.href = NOTES_PATH;
     } catch (error) {
       console.log(error);
@@ -109,46 +112,31 @@ export function useNotes() {
   }
 
   async function handleClickArchive(id: string) {
-    try {
-      setIsLoading(true);
-      const res = await archiveNote(id);
-      if (res.status === "success") {
-        notifications.show({
-          title: res.status.toUpperCase(),
-          message: res.message,
-          position: "top-right",
-          autoClose: 5000,
-          color: PRIMARY_COLOR,
-        });
-      }
-      setReload(reload + 1);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
+    const res = await archiveNote(id);
+    if (res.status === "success") {
+      notifications.show({
+        title: res.status.toUpperCase(),
+        message: res.message,
+        position: "top-right",
+        autoClose: 5000,
+        color: PRIMARY_COLOR,
+      });
     }
+    setReload(reload + 1);
   }
 
   async function handleClickUnarchive(id: string) {
-    try {
-      setIsLoading(true);
-      const res = await unarchiveNote(id);
-      if (res.status === "success") {
-        notifications.show({
-          title: res.status.toUpperCase(),
-          message: res.message,
-          position: "top-right",
-          autoClose: 5000,
-          color: PRIMARY_COLOR,
-        });
-      }
-      setReload(reload + 1);
-      // window.location.href = NOTES_PATH;
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
+    const res = await unarchiveNote(id);
+    if (res.status === "success") {
+      notifications.show({
+        title: res.status.toUpperCase(),
+        message: res.message,
+        position: "top-right",
+        autoClose: 5000,
+        color: PRIMARY_COLOR,
+      });
     }
+    setReload(reload + 1);
   }
 
   return {
@@ -156,6 +144,7 @@ export function useNotes() {
     notes,
     isLoading,
     reload,
+    navigate,
     getAllNotes,
     onCreateNote,
     getDetailNote,
