@@ -18,8 +18,8 @@ type AuthFormProps = {
 };
 
 export default function AuthForm(props: AuthFormProps) {
-  const isLogin = () => type === "login";
   const { type } = props;
+  const isLogin = type === "login";
   const { isLoading, executeLogin, executeRegister } = useAuth();
 
   const loginSchema = Yup.object({
@@ -37,9 +37,9 @@ export default function AuthForm(props: AuthFormProps) {
       .min(6, "Password must be at least 6 characters long"),
   });
 
-  const schema = isLogin() ? loginSchema : registerSchema;
+  const schema = isLogin ? loginSchema : registerSchema;
 
-  const data = isLogin()
+  const data = isLogin
     ? {
         email: "",
         password: "",
@@ -56,17 +56,17 @@ export default function AuthForm(props: AuthFormProps) {
   });
 
   function handleSubmitAuth(values: AuthDataType) {
-    isLogin() ? executeLogin(values) : executeRegister(values);
+    isLogin ? executeLogin(values) : executeRegister(values);
   }
 
   return (
     <form onSubmit={form.onSubmit((values) => handleSubmitAuth(values))}>
       <Flex direction={"column"} justify={"center"} align={"center"} gap={"md"}>
-        <Title order={1}>{type === "login" ? "Login" : "Register"}</Title>
+        <Title order={1}>{isLogin ? "Login" : "Register"}</Title>
         <Text size="lg" mb={20}>
-          {isLogin() ? "Welcome to Notes!" : "Create your account"}
+          {isLogin ? "Welcome to Notes!" : "Create your account"}
         </Text>
-        {!isLogin() && (
+        {!isLogin && (
           <TextInput
             w={300}
             size="md"
@@ -103,12 +103,12 @@ export default function AuthForm(props: AuthFormProps) {
           color={PRIMARY_COLOR}
           type="submit"
         >
-          {isLogin() ? "Login" : "Register"}
+          {isLogin ? "Login" : "Register"}
         </Button>
         <Text size="md">
-          {isLogin() ? "Don't have an account? " : "Already have an account? "}
-          <Link to={isLogin() ? REGISTER_PATH : LOGIN_PATH}>
-            <b>{isLogin() ? "Register" : "Login"}</b>
+          {isLogin ? "Don't have an account? " : "Already have an account? "}
+          <Link to={isLogin ? REGISTER_PATH : LOGIN_PATH}>
+            <b>{isLogin ? "Register" : "Login"}</b>
           </Link>{" "}
         </Text>
       </Flex>

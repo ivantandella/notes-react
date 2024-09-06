@@ -34,13 +34,13 @@ export default function Navbar() {
       align={"center"}
       w={"100%"}
       p={"lg"}
-      style={{ backgroundColor: PRIMARY_COLOR }}
+      bg={PRIMARY_COLOR}
     >
       <Flex direction={"row"} gap={"md"} justify={"center"} align={"center"}>
-        <Title style={{ color: "white" }}>Notes App</Title>
+        <Title c={"white"}>Notes App</Title>
       </Flex>
       <Flex direction={"row"} gap={"md"} align={"center"}>
-        <Text style={{ color: "white" }} fw={600} size={"lg"}>
+        <Text c={"white"} fw={600} size={"lg"}>
           Hi, {name}
         </Text>
         <ColorSchemeToggleButton />
