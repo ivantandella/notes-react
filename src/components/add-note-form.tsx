@@ -24,8 +24,6 @@ export default function AddNoteForm(props: AddNoteFormPropsType) {
     setTitle("");
     setBody("");
     close();
-    // window.location.reload();
-    // alert("Note Created");
   }
 
   return (

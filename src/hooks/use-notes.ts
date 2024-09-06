@@ -9,13 +9,9 @@ import {
   getNotes,
   unarchiveNote,
 } from "../services/notes.service";
-import {
-  ARCHIVED_NOTES_PATH,
-  NOTES_PATH,
-  PRIMARY_COLOR,
-} from "../utils/constant";
+import { PRIMARY_COLOR } from "../utils/constant";
 import { notifications } from "@mantine/notifications";
-import { NumberContext } from "../context/number-context";
+import { ReloadContext } from "../context/reload-context";
 
 export type NotesType = {
   id: string;
@@ -30,7 +26,7 @@ export function useNotes() {
   const [notes, setNotes] = useState<NotesType[]>([]);
   const [note, setNote] = useState<NotesType>();
   const [isLoading, setIsLoading] = useState(false);
-  const { number, setNumber } = useContext(NumberContext);
+  const { reload, setReload } = useContext(ReloadContext);
 
   async function onCreateNote(data: AddNoteType) {
     try {
@@ -45,7 +41,7 @@ export function useNotes() {
           color: PRIMARY_COLOR,
         });
       }
-      setNumber(number + 1);
+      setReload(reload + 1);
     } catch (error: any) {
       console.log(error);
     } finally {
@@ -59,7 +55,8 @@ export function useNotes() {
       const res = await getNotes();
       setNotes(res.data);
     } catch (error: any) {
-      alert(error.response.data.message);
+      // alert(error.response.data.message);
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -102,7 +99,7 @@ export function useNotes() {
           color: PRIMARY_COLOR,
         });
       }
-      setNumber(number + 1);
+      setReload(reload + 1);
       // window.location.href = NOTES_PATH;
     } catch (error) {
       console.log(error);
@@ -124,8 +121,7 @@ export function useNotes() {
           color: PRIMARY_COLOR,
         });
       }
-      setNumber(number + 1);
-      // window.location.href = ARCHIVED_NOTES_PATH;
+      setReload(reload + 1);
     } catch (error) {
       console.log(error);
     } finally {
@@ -146,7 +142,7 @@ export function useNotes() {
           color: PRIMARY_COLOR,
         });
       }
-      setNumber(number + 1);
+      setReload(reload + 1);
       // window.location.href = NOTES_PATH;
     } catch (error) {
       console.log(error);
@@ -159,7 +155,7 @@ export function useNotes() {
     note,
     notes,
     isLoading,
-    number,
+    reload,
     getAllNotes,
     onCreateNote,
     getDetailNote,

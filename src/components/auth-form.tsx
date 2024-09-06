@@ -46,17 +46,14 @@ export default function AuthForm(props: AuthFormProps) {
 
   return (
     <form onSubmit={handleSubmitAuth}>
-      <Flex direction={"column"} justify={"center"} align={"center"}>
-        <Title order={1} mb={20}>
-          {type === "login" ? "Login" : "Register"}
-        </Title>
+      <Flex direction={"column"} justify={"center"} align={"center"} gap={"md"}>
+        <Title order={1}>{type === "login" ? "Login" : "Register"}</Title>
         <Text size="lg" mb={20}>
           {type === "login" ? "Welcome to Notes!" : "Create your account"}
         </Text>
         {type === "register" && (
           <TextInput
             w={300}
-            my={20}
             size="md"
             radius="md"
             label="Name"
@@ -67,7 +64,6 @@ export default function AuthForm(props: AuthFormProps) {
         )}
         <TextInput
           w={300}
-          my={20}
           size="md"
           radius="md"
           label="Email"
@@ -77,7 +73,6 @@ export default function AuthForm(props: AuthFormProps) {
         />
         <PasswordInput
           w={300}
-          my={20}
           size="md"
           radius="md"
           label="Password"

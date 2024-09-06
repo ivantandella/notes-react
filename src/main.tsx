@@ -18,7 +18,8 @@ import {
 } from "./utils/constant.ts";
 import { ModalsProvider } from "@mantine/modals";
 import "@mantine/notifications/styles.css";
-import NumberContextProvider from "./context/number-context.tsx";
+import ReloadContextProvider from "./context/reload-context.tsx";
+import { Notifications } from "@mantine/notifications";
 
 const router = createBrowserRouter([
   {
@@ -51,9 +52,10 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <MantineProvider theme={theme}>
       <ModalsProvider>
-        <NumberContextProvider>
+        <ReloadContextProvider>
+          <Notifications />
           <RouterProvider router={router} />
-        </NumberContextProvider>
+        </ReloadContextProvider>
       </ModalsProvider>
     </MantineProvider>
   </React.StrictMode>

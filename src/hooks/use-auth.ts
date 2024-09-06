@@ -6,20 +6,46 @@ import {
   register,
   RegisterDataType,
 } from "../services/auth.service";
-import { LOGIN_PATH, NOTES_PATH } from "../utils/constant";
+import {
+  DANGER_COLOR,
+  LOGIN_PATH,
+  NOTES_PATH,
+  PRIMARY_COLOR,
+} from "../utils/constant";
+import { useNavigate } from "react-router-dom";
+import { notifications } from "@mantine/notifications";
+import { getToken } from "../utils/token";
 
 export function useAuth() {
   const [name, setName] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   async function executeLogin(data: LoginDataType) {
     try {
       setIsLoading(true);
       const masuk = await login(data);
-      window.location.href = NOTES_PATH;
-      localStorage.setItem("token", masuk.data.accessToken);
+
+      if (masuk.status === "success") {
+        localStorage.setItem("token", masuk.data.accessToken);
+        navigate(NOTES_PATH);
+
+        notifications.show({
+          title: masuk.status.toUpperCase(),
+          message: masuk.message,
+          position: "top-right",
+          autoClose: 5000,
+          color: PRIMARY_COLOR,
+        });
+      }
     } catch (error: any) {
-      alert(error.response.data.message);
+      notifications.show({
+        title: error.response.data.status.toUpperCase(),
+        message: error.response.data.message,
+        position: "top-right",
+        autoClose: 5000,
+        color: DANGER_COLOR,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -29,26 +55,57 @@ export function useAuth() {
     try {
       setIsLoading(true);
       const regis = await register(data);
-      window.location.href = LOGIN_PATH;
-      alert(`${regis.message}, Please login!`);
+
+      if (regis.status === "success") {
+        navigate(LOGIN_PATH);
+
+        notifications.show({
+          title: regis.status.toUpperCase(),
+          message: `${regis.message}, Please login!`,
+          position: "top-right",
+          autoClose: 5000,
+          color: PRIMARY_COLOR,
+        });
+      }
     } catch (error: any) {
-      alert(error.response.data.message);
+      notifications.show({
+        title: error.response.data.status.toUpperCase(),
+        message: error.response.data.message,
+        position: "top-right",
+        autoClose: 5000,
+        color: DANGER_COLOR,
+      });
     } finally {
       setIsLoading(false);
     }
   }
 
   function checkLogin() {
-    const token = localStorage.getItem("token");
+    const token = getToken();
     if (!token) {
-      alert("Please login first!");
-      window.location.href = LOGIN_PATH;
+      navigate(LOGIN_PATH);
+
+      notifications.show({
+        title: "ERROR",
+        message: "Please login first!",
+        position: "top-right",
+        autoClose: 5000,
+        color: DANGER_COLOR,
+      });
     }
   }
 
   function handleLogout() {
     localStorage.removeItem("token");
-    window.location.href = LOGIN_PATH;
+    navigate(LOGIN_PATH);
+
+    notifications.show({
+      title: "SUCCESS",
+      message: "You are logged out",
+      position: "top-right",
+      autoClose: 5000,
+      color: PRIMARY_COLOR,
+    });
   }
 
   async function getUserData() {
@@ -63,6 +120,7 @@ export function useAuth() {
   return {
     name,
     isLoading,
+    navigate,
     executeLogin,
     executeRegister,
     checkLogin,
