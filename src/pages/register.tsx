@@ -12,7 +12,8 @@ export default function RegisterPage() {
         direction={"column"}
         justify={"center"}
         align={"center"}
-        h={"100vh"}
+        mih={"100vh"}
+        py={10}
       >
         <Card shadow="sm" p="lg" withBorder w={500}>
           <AuthForm type="register" />

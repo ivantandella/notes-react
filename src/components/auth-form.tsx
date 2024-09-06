@@ -6,60 +6,74 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { LOGIN_PATH, PRIMARY_COLOR, REGISTER_PATH } from "../utils/constant";
 import { useAuth } from "../hooks/use-auth";
+import { useForm, yupResolver } from "@mantine/form";
+import * as Yup from "yup";
 
 type AuthFormProps = {
   type: "login" | "register";
 };
 
 export default function AuthForm(props: AuthFormProps) {
+  const isLogin = () => type === "login";
   const { type } = props;
   const { isLoading, executeLogin, executeRegister } = useAuth();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const loginSchema = Yup.object({
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(6, "Password must be at least 6 characters long"),
+  });
 
-  function handleSubmitAuth(e: any) {
-    e.preventDefault();
+  const registerSchema = Yup.object({
+    name: Yup.string().required("Name is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(6, "Password must be at least 6 characters long"),
+  });
 
-    if (type === "login") {
-      // login logic
-      const data = {
-        email: email,
-        password: password,
+  const schema = isLogin() ? loginSchema : registerSchema;
+
+  const data = isLogin()
+    ? {
+        email: "",
+        password: "",
+      }
+    : {
+        name: "",
+        email: "",
+        password: "",
       };
-      executeLogin(data);
-    } else {
-      // register logic
-      const data = {
-        name: name,
-        email: email,
-        password: password,
-      };
-      executeRegister(data);
-    }
+
+  const form = useForm({
+    initialValues: data,
+    validate: yupResolver(schema),
+  });
+
+  function handleSubmitAuth(values: any) {
+    isLogin() ? executeLogin(values) : executeRegister(values);
   }
 
   return (
-    <form onSubmit={handleSubmitAuth}>
+    <form onSubmit={form.onSubmit((values) => handleSubmitAuth(values))}>
       <Flex direction={"column"} justify={"center"} align={"center"} gap={"md"}>
         <Title order={1}>{type === "login" ? "Login" : "Register"}</Title>
         <Text size="lg" mb={20}>
-          {type === "login" ? "Welcome to Notes!" : "Create your account"}
+          {isLogin() ? "Welcome to Notes!" : "Create your account"}
         </Text>
-        {type === "register" && (
+        {!isLogin() && (
           <TextInput
             w={300}
             size="md"
             radius="md"
             label="Name"
             placeholder="Your Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            key={form.key("name")}
+            {...form.getInputProps("name")}
           />
         )}
         <TextInput
@@ -68,8 +82,8 @@ export default function AuthForm(props: AuthFormProps) {
           radius="md"
           label="Email"
           placeholder="example@mail.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          key={form.key("email")}
+          {...form.getInputProps("email")}
         />
         <PasswordInput
           w={300}
@@ -77,8 +91,8 @@ export default function AuthForm(props: AuthFormProps) {
           radius="md"
           label="Password"
           placeholder="******"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          key={form.key("password")}
+          {...form.getInputProps("password")}
         />
         <Button
           loading={isLoading}
@@ -88,14 +102,12 @@ export default function AuthForm(props: AuthFormProps) {
           color={PRIMARY_COLOR}
           type="submit"
         >
-          {type === "login" ? "Login" : "Register"}
+          {isLogin() ? "Login" : "Register"}
         </Button>
         <Text size="md">
-          {type === "login"
-            ? "Don't have an account? "
-            : "Already have an account? "}
-          <Link to={type === "login" ? REGISTER_PATH : LOGIN_PATH}>
-            <b>{type === "login" ? "Register" : "Login"}</b>
+          {isLogin() ? "Don't have an account? " : "Already have an account? "}
+          <Link to={isLogin() ? REGISTER_PATH : LOGIN_PATH}>
+            <b>{isLogin() ? "Register" : "Login"}</b>
           </Link>{" "}
         </Text>
       </Flex>
