@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 
 export const SearchContext = createContext({
   search: "",
-  setSearch: (search: string) => {},
+  setSearch: (_: string) => {},
 });
 
 export default function SearchContextProvider({

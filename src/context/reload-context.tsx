@@ -2,7 +2,7 @@ import { createContext, ReactNode, useState } from "react";
 
 export const ReloadContext = createContext({
   reload: 0,
-  setReload: (reload: number) => {},
+  setReload: (_: number) => {},
 });
 
 export default function ReloadContextProvider({
