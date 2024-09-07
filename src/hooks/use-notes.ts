@@ -45,7 +45,7 @@ export function useNotes() {
       }
       setReload(reload + 1);
     } catch (error: any) {
-      console.log(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -58,7 +58,7 @@ export function useNotes() {
       setNotes(res.data);
     } catch (error: any) {
       // alert(error.response.data.message);
-      console.log(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -82,7 +82,7 @@ export function useNotes() {
       const res = await getArchived();
       setNotes(res.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }

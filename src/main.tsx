@@ -20,6 +20,7 @@ import { ModalsProvider } from "@mantine/modals";
 import "@mantine/notifications/styles.css";
 import ReloadContextProvider from "./context/reload-context.tsx";
 import { Notifications } from "@mantine/notifications";
+import SearchContextProvider from "./context/search-context.tsx";
 
 const router = createBrowserRouter([
   {
@@ -52,10 +53,12 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <MantineProvider theme={theme} defaultColorScheme="light">
       <ModalsProvider>
-        <ReloadContextProvider>
-          <Notifications />
-          <RouterProvider router={router} />
-        </ReloadContextProvider>
+        <SearchContextProvider>
+          <ReloadContextProvider>
+            <Notifications />
+            <RouterProvider router={router} />
+          </ReloadContextProvider>
+        </SearchContextProvider>
       </ModalsProvider>
     </MantineProvider>
   </React.StrictMode>
