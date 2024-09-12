@@ -1,4 +1,8 @@
-# Notes Application 
+<p align="center">
+   <img width="128" alt="notes" src="https://github.com/user-attachments/assets/bc8f64d3-a9c0-40da-aeae-141e64cf7c01">
+</p>
+
+<h1 align="center">Notes Application </h1> 
 
 Welcome to the Notes Application repository! This is a modern notes app built using ReactJS, Vite, Mantine UI, and other technologies. The app allows users to create, archive, and delete notes with a clean user interface. [Live Demo](https://notes-react-seven.vercel.app/)
 
