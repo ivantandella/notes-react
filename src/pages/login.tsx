@@ -1,7 +1,6 @@
 import { Card, Flex } from "@mantine/core";
 import AuthForm from "../components/auth-form";
 import ColorSchemeToggleButton from "../components/colorscheme-toggle-btn";
-import { useMediaQuery } from "@mantine/hooks";
 import { useResponsive } from "../hooks/use-responsive";
 
 export default function LoginPage() {
