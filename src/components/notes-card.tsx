@@ -13,6 +13,7 @@ import ArchiveIcon from "./icons/archive-icon";
 import UnarchiveIcon from "./icons/unarchive-icon";
 import { modals } from "@mantine/modals";
 import { useState } from "react";
+import { useResponsive } from "../hooks/use-responsive";
 
 export type NotesCardPropsType = {
   note: NotesType;
@@ -24,6 +25,8 @@ export default function NotesCard(props: NotesCardPropsType) {
   const { note, type } = props;
   const { handleClickDelete, handleClickArchive, handleClickUnarchive } =
     useNotes();
+  const { mdScreen } = useResponsive();
+  const cardWidth = mdScreen ? "100%" : "290px";
 
   function openDeleteModal(id: string) {
     modals.openConfirmModal({
@@ -47,7 +50,8 @@ export default function NotesCard(props: NotesCardPropsType) {
       withBorder
       shadow="md"
       radius={"md"}
-      style={{ width: "290px", minHeight: "200px" }}
+      w={cardWidth}
+      mih={200}
     >
       <Title order={3}>{note.title}</Title>
       <Text size="sm" fs={"italic"}>

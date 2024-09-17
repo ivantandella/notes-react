@@ -47,7 +47,7 @@ export default function DetailPage() {
         </Flex>
       )}
       {note && (
-        <Card withBorder shadow="sm" p="lg" m={100}>
+        <Card withBorder shadow="sm" p="lg" m={50}>
           <Title mb={40}>
             Detail Notes {note.archived ? <i>(archived)</i> : ""}
           </Title>

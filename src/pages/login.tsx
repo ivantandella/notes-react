@@ -1,8 +1,11 @@
 import { Card, Flex } from "@mantine/core";
 import AuthForm from "../components/auth-form";
 import ColorSchemeToggleButton from "../components/colorscheme-toggle-btn";
+import { useMediaQuery } from "@mantine/hooks";
+import { useResponsive } from "../hooks/use-responsive";
 
 export default function LoginPage() {
+  const { authWidth } = useResponsive();
   return (
     <>
       <ColorSchemeToggleButton
@@ -14,7 +17,7 @@ export default function LoginPage() {
         align={"center"}
         h={"100vh"}
       >
-        <Card shadow="sm" p="lg" withBorder w={500}>
+        <Card shadow="sm" p="lg" withBorder w={authWidth}>
           <AuthForm type="login" />
         </Card>
       </Flex>

@@ -12,6 +12,7 @@ import { useAuth } from "../hooks/use-auth";
 import { useForm, yupResolver } from "@mantine/form";
 import * as Yup from "yup";
 import { AuthDataType } from "../services/auth.service";
+import { useResponsive } from "../hooks/use-responsive";
 
 type AuthFormProps = {
   type: "login" | "register";
@@ -21,6 +22,7 @@ export default function AuthForm(props: AuthFormProps) {
   const { type } = props;
   const isLogin = type === "login";
   const { isLoading, executeLogin, executeRegister } = useAuth();
+  const { inputWidth } = useResponsive();
 
   const loginSchema = Yup.object({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -68,7 +70,7 @@ export default function AuthForm(props: AuthFormProps) {
         </Text>
         {!isLogin && (
           <TextInput
-            w={300}
+            w={inputWidth}
             size="md"
             radius="md"
             label="Name"
@@ -78,7 +80,7 @@ export default function AuthForm(props: AuthFormProps) {
           />
         )}
         <TextInput
-          w={300}
+          w={inputWidth}
           size="md"
           radius="md"
           label="Email"
@@ -87,7 +89,7 @@ export default function AuthForm(props: AuthFormProps) {
           {...form.getInputProps("email")}
         />
         <PasswordInput
-          w={300}
+          w={inputWidth}
           size="md"
           radius="md"
           label="Password"
